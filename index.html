@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Paguyuban UMKM Wanakarsa</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2F6B4F">
+<link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Wanakarsa">
+<style>
+html,body{margin:0;height:100%;background:#2F6B4F;font-family:'Comic Sans MS','Comic Neue',cursive,sans-serif}
+body{display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);box-sizing:border-box}
+#f{flex:1;width:100%;border:0;background:#F3F9F5}
+#ib{display:none;background:#E8F5EC;color:#22372C;padding:8px 12px;font-size:14px;align-items:center;gap:8px}
+#ib span{flex:1}#ib button{border:0;border-radius:10px;padding:8px 12px;font:inherit;cursor:pointer;background:#2F6B4F;color:#fff}#ib .x{background:none;color:#22372C;font-size:18px}
+#sp{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#F3F9F5;color:#2F6B4F;text-align:center;padding:20px;transition:opacity .4s}
+#sp img{width:150px}
+</style></head><body>
+<div id="ib"><span id="it"></span><button id="ibtn" style="display:none">Pasang</button><button class="x" onclick="hideIb(1)">✕</button></div>
+<iframe id="f" allow="camera; clipboard-write; fullscreen" title="Aplikasi Paguyuban"></iframe>
+<div id="sp"><img src="icons/icon-512.png" alt="Logo"><b>Paguyuban UMKM Wanakarsa</b><span id="sm">Memuat aplikasi…</span></div>
+<script>
+/* >>> GANTI dengan URL web app Anda (yang berakhiran /exec) <<< */
+var APP_URL='https://script.google.com/macros/s/AKfycbyfty5F5rlzRKH6EMiw5AXMRmpDfW8Bpa5Rp4kwYiGJ-G3Qt6Q8O7Nhx3GwQLOGYrAN/exec';
+
+var f=document.getElementById('f'),sp=document.getElementById('sp'),sm=document.getElementById('sm'),ib=document.getElementById('ib'),dp=null;
+function hide(){sp.style.opacity=0;setTimeout(function(){sp.style.display='none'},400)}
+function show(m){sm.textContent=m;sp.style.display='flex';sp.style.opacity=1}
+function load(){if(APP_URL.indexOf('GANTI')>=0){show('URL aplikasi belum diisi. Buka index.html lalu ganti APP_URL.');return}if(!navigator.onLine){show('Tidak ada koneksi internet. Sambungkan internet lalu coba lagi.');return}show('Memuat aplikasi…');f.src=APP_URL;setTimeout(hide,7000)}
+f.addEventListener('load',function(){if(f.src)hide()});
+window.addEventListener('online',load);
+window.addEventListener('offline',function(){show('Tidak ada koneksi internet.')});
+/* Ajakan memasang aplikasi (Android: tombol Pasang; iPhone: petunjuk manual) */
+function hideIb(s){ib.style.display='none';if(s)try{localStorage.setItem('ibx','1')}catch(e){}}
+function standalone(){return matchMedia('(display-mode: standalone)').matches||navigator.standalone}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;var s=0;try{s=localStorage.getItem('ibx')}catch(x){}if(s||standalone())return;document.getElementById('it').textContent='📲 Pasang aplikasi di layar utama HP';var b=document.getElementById('ibtn');b.style.display='inline-block';b.onclick=function(){dp.prompt();dp.userChoice.then(function(){hideIb(0)})};ib.style.display='flex'});
+if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!standalone()){var s2=0;try{s2=localStorage.getItem('ibx')}catch(x){}if(!s2){document.getElementById('it').textContent='📲 Pasang: ketuk ikon Bagikan, lalu "Tambah ke Layar Utama"';ib.style.display='flex'}}
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
+load();
+</script></body></html>
