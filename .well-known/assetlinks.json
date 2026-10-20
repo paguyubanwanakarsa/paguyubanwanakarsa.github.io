@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.paguyubanwanakarsa.twa",
+        "sha256_cert_fingerprints": ["A0:C1:33:5F:7F:98:D8:92:B9:4A:A5:D6:DF:BB:6D:B7:EF:76:AA:2E:E8:CE:92:A0:B2:7F:CB:AA:91:32:80:8A"]
+      }
+    }]
